@@ -10,9 +10,9 @@ interface IRank
 {
     /**
      * 添加一个排行
-     * @param $rankType   排行类别
-     * @param $key        key
-     * @param $score      分数
+     * @param string $rankType   排行类别
+     * @param string $key        key
+     * @param int $score      分数
      * @param int $length 最大排行人数， 0=不限制
      * @return bool
      */

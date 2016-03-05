@@ -29,7 +29,7 @@ class Route
                 if($class->_before()) {
                     $method = Request::getMethod();
                     if (!method_exists($class, $method)) {
-                        throw new \Exception("method error");
+                        throw new \Exception("method error class = " . $action . " method = " . $method);
                     }
                     $view = $class->$method();
                 } else {
