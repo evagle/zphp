@@ -14,7 +14,7 @@ use ZPHP\Protocol\IProtocol;
 use ZPHP\Common\Route as ZRoute;
 use ZPHP\Protocol\Request;
 
-class Http implements IProtocol
+class GzHttp implements IProtocol
 {
     /**
      * 直接 parse $_REQUEST
@@ -23,8 +23,6 @@ class Http implements IProtocol
      */
     public function parse($data)
     {
-
-
         $ctrlName = Config::getField('project', 'default_ctrl_name', 'main\\main');
         $methodName = Config::getField('project', 'default_method_name', 'main');
         $apn = Config::getField('project', 'ctrl_name', 'a');
@@ -45,7 +43,7 @@ class Http implements IProtocol
             parse_str($decodedBody, $params);
             $data = $params;
             $data[$apn] = $ctrlName;
-            $data[$mpn] = $ctrlName;
+            $data[$mpn] = $methodName;
         }
 
         if(!empty($_SERVER['PATH_INFO']) && '/' !== $_SERVER['PATH_INFO']) {
