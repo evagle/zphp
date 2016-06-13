@@ -23,15 +23,7 @@ class Http implements IProtocol
      */
     public function parse($data)
     {
-        // 处理gzip压缩的数据
-        $encoding = $_SERVER['HTTP_CONTENT_ENCODING'];
-        if ($encoding == "gzip") {
-            $rawBody = file_get_contents('php://input');
-            $decodedBody = gzdecode($rawBody);
-            $params = [];
-            parse_str($decodedBody, $params);
-            $data = $params;
-        }
+
 
         $ctrlName = Config::getField('project', 'default_ctrl_name', 'main\\main');
         $methodName = Config::getField('project', 'default_method_name', 'main');
@@ -42,6 +34,18 @@ class Http implements IProtocol
         }
         if (isset($data[$mpn])) {
             $methodName = $data[$mpn];
+        }
+
+        // 处理gzip压缩的数据
+        $encoding = $_SERVER['HTTP_CONTENT_ENCODING'];
+        if ($encoding == "gzip") {
+            $rawBody = file_get_contents('php://input');
+            $decodedBody = gzdecode($rawBody);
+            $params = [];
+            parse_str($decodedBody, $params);
+            $data = $params;
+            $data[$apn] = $ctrlName;
+            $data[$mpn] = $ctrlName;
         }
 
         if(!empty($_SERVER['PATH_INFO']) && '/' !== $_SERVER['PATH_INFO']) {
