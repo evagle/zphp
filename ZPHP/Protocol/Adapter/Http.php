@@ -6,6 +6,7 @@
 
 
 namespace ZPHP\Protocol\Adapter;
+use common\Log;
 use ZPHP\Core;
 use ZPHP\View;
 use ZPHP\Core\Config;
@@ -44,6 +45,16 @@ class Http implements IProtocol
                     $data = $data + $routeMap[2];
                 }
             }
+        }
+        $encoding = $_SERVER['HTTP_CONTENT_ENCODING'];
+        $rawBody = file_get_contents('php://input');
+
+        if ($encoding == "gzip") {
+            $decodedBody = gzdecode($rawBody);
+            $params = [];
+            parse_str($decodedBody, $params);
+            $data = array_merge($data, $params);
+            Log::debug("http params = ", $data);
         }
         Request::init($ctrlName, $methodName, $data, Config::getField('project', 'view_mode', 'Php'));
         return true;
