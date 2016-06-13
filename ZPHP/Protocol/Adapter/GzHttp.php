@@ -41,9 +41,11 @@ class GzHttp implements IProtocol
             $decodedBody = gzdecode($rawBody);
             $params = [];
             parse_str($decodedBody, $params);
-            $data = $params;
-            $data[$apn] = $ctrlName;
-            $data[$mpn] = $methodName;
+            if (!empty($params)) {
+                $data = $params;
+                $data[$apn] = $ctrlName;
+                $data[$mpn] = $methodName;
+            }
         }
 
         if(!empty($_SERVER['PATH_INFO']) && '/' !== $_SERVER['PATH_INFO']) {
