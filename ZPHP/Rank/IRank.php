@@ -20,7 +20,7 @@ interface IRank
 
     /**
      * 获取一段排行
-     * @param $rankType     排行类别
+     * @param string $rankType     排行类别
      * @param int $start    起始名次
      * @param int $limit    结束名次
      * @param bool $score   是否返回分数
@@ -31,7 +31,7 @@ interface IRank
 
     /**
      * 返回某一区间分数排行
-     * @param $rankType     排行类别
+     * @param string  $rankType     排行类别
      * @param $start        起始分数
      * @param $end          结束分数
      * @param $scores       是否显示分数
@@ -43,7 +43,7 @@ interface IRank
 
     /**
      * 返回某一区间分数 排行的人数
-     * @param $rankType     排行类别
+     * @param string $rankType     排行类别
      * @param $start        起始分数
      * @param $end          结束分数
      * @return mixed
@@ -53,14 +53,14 @@ interface IRank
     /**
      *
      * 返回排行榜总人数
-     * @param type $rankType    排行类别
+     * @param string $rankType    排行类别
      */
     public function getRankCount($rankType);
 
     /**
      *
      * 获取指定key的排行
-     * @param type $rankType
+     * @param string  $rankType
      * @param type $key
      */
     public function getRankByKey($rankType, $key, $desc);
@@ -68,7 +68,7 @@ interface IRank
     /**
      *
      * 更新指定key的排行
-     * @param type $rankType
+     * @param string  $rankType
      * @param type $key
      * @param type $score
      * @return type
@@ -77,7 +77,7 @@ interface IRank
 
     /**
      * 删除指定key的排行
-     * @param $rankType
+     * @param string $rankType
      * @param $key
      * @return mixed
      */
@@ -85,14 +85,14 @@ interface IRank
 
     /**
      * 删除某类排行
-     * @param $rankType
+     * @param string $rankType
      * @return mixed
      */
     public function deleteRank($rankType);
 
     /**
      * 获取指定key的分数
-     * @param $rankType
+     * @param string $rankType
      * @param $key
      * @return mixed
      */
