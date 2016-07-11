@@ -74,29 +74,28 @@ class ZPHP
 
     final public static function autoLoader($class)
     {
-
         if(isset(self::$classPath[$class])) {
-            require self::$classPath[$class];
             return;
         }
         $baseClasspath = \str_replace('\\', DS, $class) . '.php';
-        $libs = array(
-            self::$rootPath . DS . self::$appPath,
-            self::$zPath
-        );
-        if(is_array(self::$libPath)) {
-            $libs = array_merge($libs, self::$libPath);
-        } else {
-            $libs[] = self::$libPath;
+        $pre = substr($baseClasspath, 0, 4);
+        if('ZPHP' === $pre) {
+            $classpath = self::$zPath . DS . $baseClasspath;
+            self::$classPath[$class] = $classpath;
+            require "{$classpath}";
+            return;
         }
-        foreach ($libs as $lib) {
-            $classpath = $lib . DS . $baseClasspath;
-            if (\is_file($classpath)) {
-                self::$classPath[$class] = $classpath;
-                require "{$classpath}";
-                return;
-            }
+
+        if('open' === $pre || 'Http' == $pre  || 'Serv'==$pre || 'Prot'==$pre || 'noti' == $pre) {
+            $classpath = self::$rootPath . DS . '../lib'. DS . $baseClasspath;
+            self::$classPath[$class] = $classpath;
+            require "{$classpath}";
+            return;
         }
+        $classpath = self::$rootPath . DS . self::$appPath . DS . $baseClasspath;
+        self::$classPath[$class] = $classpath;
+        require "{$classpath}";
+        return;
     }
 
     final public static function exceptionHandler($exception)
