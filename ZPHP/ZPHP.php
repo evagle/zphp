@@ -86,7 +86,7 @@ class ZPHP
             return;
         }
 
-        if('open' === $pre || 'Http' == $pre  || 'Serv'==$pre || 'Prot'==$pre || 'noti' == $pre) {
+        if('open' === $pre || 'SDK/' == $pre || 'Http' == $pre  || 'Serv'==$pre || 'Prot'==$pre || 'noti' == $pre) {
             $classpath = self::$rootPath . DS . '../lib'. DS . $baseClasspath;
             self::$classPath[$class] = $classpath;
             require "{$classpath}";
