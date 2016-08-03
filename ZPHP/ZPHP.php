@@ -132,6 +132,9 @@ class ZPHP
         self::setRootPath($rootPath);
         if(empty($configPath)) {
             if (!empty($_SERVER['HTTP_HOST'])) {
+                if (substr($configPath, -3) == ":80") {
+                    $configPath = substr($configPath, 0, -3);
+                }
                 $configPath = \str_replace(':', '_', $_SERVER['HTTP_HOST']);
             } elseif (!empty($_SERVER['argv'][1])) {
                 $configPath = $_SERVER['argv'][1];
