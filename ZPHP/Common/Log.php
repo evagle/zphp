@@ -30,6 +30,10 @@ class Log
     
     public static function myJson($data)
     {
-		return json_encode($data,  JSON_UNESCAPED_UNICODE);
+        if (is_string($data)) {
+            return $data;
+        } else {
+		    return json_encode($data,  JSON_UNESCAPED_UNICODE);
+        }
 	}
 }
