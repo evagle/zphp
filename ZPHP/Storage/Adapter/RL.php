@@ -189,9 +189,10 @@ class RL implements IStorage
         }
 
         $this->redis->close();
-
+        $this->redis = null;
         if (!empty($this->sRedis)) {
             $this->sRedis->close();
+            $this->sRedis = null;
         }
 
         return true;
