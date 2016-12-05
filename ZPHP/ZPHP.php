@@ -10,7 +10,6 @@ use ZPHP\View,
     ZPHP\Core\Config,
     ZPHP\Common\Debug,
     ZPHP\Common\Formater;
-use ZPHP\Common\Log;
 class ZPHP
 {
     /**
@@ -134,7 +133,6 @@ class ZPHP
         }
         self::$zPath = \dirname(__DIR__);
         self::setRootPath($rootPath);
-        Log::info("ppdebug", ["x"]);
         if(empty($configPath)) {
             if (!empty($_SERVER['HTTP_HOST'])) {
                 $configPath = \str_replace(':', '_', $_SERVER['HTTP_HOST']);
