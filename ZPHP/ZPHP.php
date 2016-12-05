@@ -92,7 +92,11 @@ class ZPHP
             require "{$classpath}";
             return;
         }
+
         $classpath = self::$rootPath . DS . self::$appPath . DS . $baseClasspath;
+        if (!file_exists($classpath)) {
+            $classpath = self::$rootPath . DS . '../lib'. DS . $baseClasspath;
+        }
         self::$classPath[$class] = $classpath;
         require "{$classpath}";
         return;
@@ -130,6 +134,7 @@ class ZPHP
         }
         self::$zPath = \dirname(__DIR__);
         self::setRootPath($rootPath);
+        Log::info("ppdebug", ["x"]);
         if(empty($configPath)) {
             if (!empty($_SERVER['HTTP_HOST'])) {
                 $configPath = \str_replace(':', '_', $_SERVER['HTTP_HOST']);
