@@ -118,6 +118,7 @@ class Redis implements IStorage
 
     public function setMD($userId, $key, $data, $cas = false)
     {
+        $this->checkPing();
         if ($cas) {
             return $this->setMDCAS($userId, $key, $data);
         }
