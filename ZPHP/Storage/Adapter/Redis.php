@@ -6,6 +6,7 @@
 
 
 namespace ZPHP\Storage\Adapter;
+use ZPHP\Common\Log;
 use ZPHP\Manager,
     ZPHP\Storage\IStorage;
 
@@ -15,12 +16,38 @@ class Redis implements IStorage
     private $sRedis = null;
     private $suffix = "";
     private $pconnect;
+    private $config;
+    private $slaveConfig;
+    const CONNECTION_TIME_OUT = 10;
+    private $lastPing = 0;
 
     public function __construct($config)
     {
         if (empty($this->redis)) {
             $this->redis = Manager\Redis::getInstance($config);
             $this->pconnect = $config['pconnect'];
+            $this->config = $config;
+        }
+    }
+
+    public function checkPing()
+    {
+        $now = time();
+        if ($now - $this->lastPing > self::CONNECTION_TIME_OUT) {
+            if ($this->redis->ping() != "PONG") {
+                $this->close();
+
+                $this->redis = Manager\Redis::getInstance($this->config);
+                if (!empty($this->slaveConfig)) {
+                    $this->sRedis = Manager\Redis::getInstance($this->slaveConfig);
+                }
+
+                Log::info('zphp_redis',['ping error, reconnect', $config]);
+            } else {
+                Log::info('zphp_redis',['ping succuss']);
+            }
+
+            $this->lastPing = $now;
         }
     }
 
@@ -43,6 +70,7 @@ class Redis implements IStorage
 
     public function getMutilMD($userId, $keys, $slaveConfig = '')
     {
+        $this->checkPing();
         $uKey = $this->uKey($userId);
         $datas = $this->redis->hMGet($uKey, $keys);
         foreach ($datas as $key => $val) {
@@ -58,6 +86,7 @@ class Redis implements IStorage
 
     public function getMD($userId, $key, $slaveConfig = "")
     {
+        $this->checkPing();
         $uKey = $this->uKey($userId);
         $data = $this->redis->hGet($uKey, $key);
         return $data;
